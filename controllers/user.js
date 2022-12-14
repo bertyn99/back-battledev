@@ -3,8 +3,7 @@
 const User = require("../db/model/user");
 const database = require("../db/connexion");
 const { successRes, errorRes } = require("../common/response");
-const bcrypt = require("bcrypt");
-
+const argon2 = require('argon2');
 async function register(req, res) {
   const user = new User(req.body);
 

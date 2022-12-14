@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const argon2 = require('argon2');
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 const validator = require("validator");
@@ -17,6 +17,7 @@ let userSchema = new Schema(
       required: true,
       trim: true,
       lowercase: true,
+      index: true,
       unique: true,
       validate(value) {
         if (!validator.isEmail(value)) {
@@ -85,7 +86,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     throw new Error("Unable to login.");
   }
 
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await argon2.verify(user.password,password);
 
   if (!isMatch) {
     throw new Error("Unable to login.");
@@ -96,7 +97,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+    user.password = await argon2.hash(user.password);
   }
 
   next();
