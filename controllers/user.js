@@ -1,9 +1,9 @@
 // To declare
 //db and schema
-const User = require("../db/model/user");
-const database = require("../db/connexion");
-const { successRes, errorRes } = require("../common/response");
-const argon2 = require('argon2');
+import User from "../db/model/user.js";
+import database from "../db/connexion.js";
+import { successRes, errorRes } from "../common/response.js";
+import argon2 from "argon2";
 async function register(req, res) {
   const user = new User(req.body);
 
@@ -118,10 +118,12 @@ async function deleteUser(req, res) {
     });
 } */
 
-module.exports = {
+const user = {
   register,
   logIn,
   logOut,
   myInfo,
   updateInfo,
 };
+
+export default user;

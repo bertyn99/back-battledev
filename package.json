@@ -3,6 +3,7 @@
     "version": "0.0.4",
     "description": "",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "start": "nodemon index.js",
         "start prod": "NODE_ENV=production nodemon src/index.js"

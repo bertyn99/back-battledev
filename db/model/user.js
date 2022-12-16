@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
-const argon2 = require('argon2');
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import argon2 from "argon2";
+import jwt from "jsonwebtoken";
+import validator from "validator";
+import config from "../../config.js";
+
 const Schema = mongoose.Schema;
-const validator = require("validator");
-const config = require("../../config");
 
 let userSchema = new Schema(
   {
@@ -86,7 +87,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     throw new Error("Unable to login.");
   }
 
-  const isMatch = await argon2.verify(user.password,password);
+  const isMatch = await argon2.verify(user.password, password);
 
   if (!isMatch) {
     throw new Error("Unable to login.");
@@ -104,5 +105,4 @@ userSchema.pre("save", async function (next) {
 });
 
 const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+export default User;

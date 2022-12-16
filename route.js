@@ -1,9 +1,10 @@
-const express = require("express");
-const user = require("./controllers/user");
-const verifyToken = require("./services/verifyToken");
+import { Router } from "express";
+import user from "./controllers/user.js";
+import quizz from "./controllers/quizz.js";
+import verifyToken from "./services/verifyToken.js";
 
-exports.router = (function () {
-  let apiRouter = express.Router();
+export const router = (function () {
+  let apiRouter = Router();
 
   //healthCheck
   apiRouter.get("/", (req, res) => {
@@ -26,6 +27,9 @@ exports.router = (function () {
 
   // edit profile
   apiRouter.route("/user/:id/edit").patch(verifyToken, user.updateInfo);
+
+  //get quetsion
+  apiRouter.route("/quizz").get(quizz.getQuizz);
 
   /*  
  

@@ -1,6 +1,5 @@
-const User = require("../db/model/user");
-const jwt = require("jsonwebtoken");
-
+import User from "../db/model/user.js";
+import * as jwt from "jsonwebtoken";
 const verifyToken = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
@@ -22,4 +21,4 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-module.exports = verifyToken;
+export default verifyToken;
