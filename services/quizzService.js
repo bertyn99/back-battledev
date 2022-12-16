@@ -1,8 +1,8 @@
 import ApiService from "./apiService.js";
 
 class Quizz {
-  constructor(category) {
-    this.category = category;
+  constructor() {
+    this.category = "";
     this.urlApi = "https://opentdb.com/api.php";
     this.apiService = new ApiService(this.urlApi, {
       headers: {
@@ -13,11 +13,14 @@ class Quizz {
   }
 
   async getQuestions() {
-    let a = await this.apiService.get("?amount=10").json();
+    let withCat = this.category.length > 0 ? `&category=${this.category}` : "";
+    let a = await this.apiService.get("?amount=10" + withCat).json();
     return a.results;
   }
 
-  setCategory(category) {}
+  setCategory(category) {
+    this.category = category;
+  }
 }
-const QuizzService = new Quizz("");
+const QuizzService = new Quizz();
 export default QuizzService;

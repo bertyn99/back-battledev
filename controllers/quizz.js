@@ -4,7 +4,8 @@ import { default as quizzService } from "../services/quizzService.js";
 
 async function getQuizz(req, res) {
   try {
-    console.log("ici");
+    const { category } = req.query;
+    if (category) quizzService.setCategory(category);
     let q = await quizzService.getQuestions();
     if (q) return successRes(res, q);
   } catch (error) {}
