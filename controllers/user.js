@@ -5,6 +5,7 @@ import database from "../db/connexion.js";
 import { successRes, errorRes } from "../common/response.js";
 import argon2 from "argon2";
 async function register(req, res) {
+  
   const user = new User(req.body);
 
   try {

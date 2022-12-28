@@ -64,6 +64,7 @@ let userSchema = new Schema(
       required: true,
       default: "user",
     },
+    badges: [],
     resetPassword: { type: Object, required: false },
     mobile: { type: Number, required: false },
   },

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import user from "./controllers/user.js";
+import battle from "./controllers/battle.js";
 import quizz from "./controllers/quizz.js";
 import verifyToken from "./services/verifyToken.js";
 
@@ -10,6 +11,10 @@ export const router = (function () {
   apiRouter.get("/", (req, res) => {
     res.send("API is running");
   });
+
+  ////////////////////////
+  ////   User         ////
+  ////////////////////////
   // register user
   apiRouter.route("/register").post(user.register);
 
@@ -28,9 +33,17 @@ export const router = (function () {
   // edit profile
   apiRouter.route("/user/:id/edit").patch(verifyToken, user.updateInfo);
 
+  ////////////////////////
+  ////   Quizz         ///
+  ////////////////////////
+
   //get quetsion
   apiRouter.route("/quizz").get(quizz.getQuizz);
 
+  ////////////////////////
+  ////   Battle        ///
+  ////////////////////////
+  apiRouter.route("/battle").get(battle.addBatle);
   /*  
  
    // info user
