@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import argon2 from "argon2";
+import * as argon2  from "argon2";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import config from "../../config.js";
@@ -49,6 +49,7 @@ let userSchema = new Schema(
     },
     firstname: { type: String, required: false },
     lastname: { type: String, required: false },
+    quizzPoints:{type:Number,default:0},
     tokens: [
       {
         token: {
@@ -72,6 +73,7 @@ let userSchema = new Schema(
     timestamps: true,
   }
 );
+userSchema.set('toJSON', { getters: true, virtuals: false });
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
@@ -83,7 +85,6 @@ userSchema.methods.generateAuthToken = async function () {
 };
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
-  console.log(user);
   if (!user) {
     throw new Error("Unable to login.");
   }
@@ -95,6 +96,14 @@ userSchema.statics.findByCredentials = async (email, password) => {
   }
   return user;
 };
+
+userSchema.methods.addScoreBattle=async function (qpBattle) {
+
+let newQuizzPoints=this.quizzPoints>=0?this.quizzPoints +qpBattle:0
+  this.quizzPoints=newQuizzPoints<0 ? 0 : newQuizzPoints
+  await this.save();
+}
+
 
 userSchema.pre("save", async function (next) {
   const user = this;
