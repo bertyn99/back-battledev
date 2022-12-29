@@ -9,7 +9,6 @@ class Quizz {
         "Content-Type": "application/json",
       },
     });
-    console.log(this.apiService.get);
   }
 
   async getQuestions() {

@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@meanie/mongoose-to-json': ^2.6.0
   argon2: ^0.30.2
   axios: ^1.2.1
   bcrypt: ^5.1.0
@@ -22,6 +23,7 @@ specifiers:
   validator: ^13.7.0
 
 dependencies:
+  '@meanie/mongoose-to-json': 2.6.0_mongoose@6.8.0
   argon2: 0.30.2
   axios: 1.2.1
   bcrypt: 5.1.0
@@ -875,6 +877,15 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /@meanie/mongoose-to-json/2.6.0_mongoose@6.8.0:
+    resolution: {integrity: sha512-IqW8jIKZTu6u8XjR8Uw/sWm592+nLUPIOCcHwRkysn3RAnxcXeYqt1mPTnsVj+gK0vQUTaEFnMnj9QOOanhYfA==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      mongoose: '>=4.13.9'
+    dependencies:
+      mongoose: 6.8.0
     dev: false
 
   /@phc/format/1.0.0:

@@ -1,6 +1,5 @@
 export default class ApiService {
   constructor(baseUrl, defaultReq) {
-    console.log("service1");
     const { headers, ...rest } = defaultReq;
     this.baseUrl = baseUrl;
     this.headers = headers;

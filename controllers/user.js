@@ -29,7 +29,8 @@ async function logIn(req, res) {
     const { password, ...useWithoutPassword } = user._doc;
     successRes(res, { ...useWithoutPassword, accessToken: token }, 201);
   } catch (e) {
-    errorRes(res, e, 400);
+    console.log(e)
+    errorRes(res, e,e.message, 500);
   }
 }
 
@@ -49,7 +50,6 @@ async function myInfo(req, res) {
 
   try {
     const user = await User.findById(_id);
-    console.log(user);
     if (!user) {
       return res.status(404).send("This is a wrong id");
     }

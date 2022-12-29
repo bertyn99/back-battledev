@@ -1,13 +1,19 @@
-import { Schema } from "mongoose";
+import { Schema, model} from "mongoose";
 
 let battleSchema = new Schema(
   {
-    idUsers: [{ type: Schema.Types.ObjectId, ref: "user" }],
+    idOpponents: [{ type: Schema.Types.ObjectId, ref: "user" }],
     category: { type: String },
-    winner: { type: String },
+    quizzpoints: [{ type: Number }],
+    winner:{ type: Schema.Types.ObjectId, ref: "user" }
   },
   { timestamps: true }
 );
 
-const Battle = mongoose.model("Battle", userSchema);
+battleSchema.statics.findBattlesOfthisUser = async function(idUser){
+  const b=await Battle.find({ 'idOpponents': idUser  })
+  return b;
+}
+battleSchema.set('toJSON', { getters: true, virtuals: false });
+const Battle = model("Battle", battleSchema);
 export default Battle;

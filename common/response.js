@@ -5,7 +5,7 @@ export function errorRes(
   statusCode = 500
 ) {
   console.error("ERROR:", err);
-  return res.status(statusCode).json({ success: false, error: errMsg });
+  return res.status(statusCode).json({  error: errMsg });
 }
 
 export function successRes(res, data = {}, statusCode = 200) {

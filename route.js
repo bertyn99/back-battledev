@@ -43,7 +43,10 @@ export const router = (function () {
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
-  apiRouter.route("/battle").get(battle.addBatle);
+  apiRouter.route("/battle").post(verifyToken,battle.addResultBattle);
+
+  //personal history
+  apiRouter.route("/user/:idUser/battle").get(verifyToken,battle.showBattlesHistory);
   /*  
  
    // info user

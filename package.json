@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/bertyn99/Template-server-api#readme",
     "dependencies": {
+        "@meanie/mongoose-to-json": "^2.6.0",
         "argon2": "^0.30.2",
         "axios": "^1.2.1",
         "bcrypt": "^5.1.0",
