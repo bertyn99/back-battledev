@@ -1,6 +1,7 @@
 import { Router } from "express";
 import user from "./controllers/user.js";
 import battle from "./controllers/battle.js";
+import leaderboard from "./controllers/leaderboard.js";
 import quizz from "./controllers/quizz.js";
 import verifyToken from "./services/verifyToken.js";
 
@@ -47,6 +48,14 @@ export const router = (function () {
 
   //personal history
   apiRouter.route("/user/:idUser/battle").get(verifyToken,battle.showBattlesHistory);
+
+  
+  ////////////////////////
+  ////   leaderboard   ///
+  ////////////////////////
+
+  apiRouter.route("/leaderboard").get(verifyToken,leaderboard.getFullLeaderboard);
+  apiRouter.route("/leaderboard/me").get(verifyToken,leaderboard.getSurroundLeaderboard);
   /*  
  
    // info user

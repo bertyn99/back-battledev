@@ -9,7 +9,7 @@ export function errorRes(
 }
 
 export function successRes(res, data = {}, statusCode = 200) {
-  return res.status(statusCode).json({ success: true, data });
+  return res.status(statusCode).json({  data });
 }
 
 export function errData(res, errMsg = "failed operation") {

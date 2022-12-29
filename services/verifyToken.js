@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
     }
 
     req.token = token;
-    req.user = user.toJSON()
+    req.user = user
     next();
   } catch (e) {
     console.log(e)

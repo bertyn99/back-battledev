@@ -1,5 +1,5 @@
-import { Schema, model} from "mongoose";
-
+import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 let battleSchema = new Schema(
   {
     idOpponents: [{ type: Schema.Types.ObjectId, ref: "user" }],
@@ -15,5 +15,5 @@ battleSchema.statics.findBattlesOfthisUser = async function(idUser){
   return b;
 }
 battleSchema.set('toJSON', { getters: true, virtuals: false });
-const Battle = model("Battle", battleSchema);
+const Battle = mongoose.model("Battle", battleSchema);
 export default Battle;

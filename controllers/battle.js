@@ -42,12 +42,18 @@ const battle = {
 
 
   showBattlesHistory: async function(req,res){
+
     //user data
-    const {user}=req;
+    let user
+
+    if(req.params.idUser!==req.user.id){
+      let u= await User.findOne({_id:req.params.idUser});
+      user=u.toJSON();
+    }
+    user=req.user.toJSON();
     try {
           //get Battles of the current user
     const battles=await Battle.findBattlesOfthisUser(user._id) 
-
 
     successRes(res, {msg:"battle history", data:{...user,battles} }, 201);
     } catch (e) {
