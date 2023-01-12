@@ -5,7 +5,6 @@ import database from "../db/connexion.js";
 import { successRes, errorRes } from "../common/response.js";
 import argon2 from "argon2";
 async function register(req, res) {
-  
   const user = new User(req.body);
 
   try {
@@ -29,8 +28,8 @@ async function logIn(req, res) {
     const { password, ...useWithoutPassword } = user._doc;
     successRes(res, { ...useWithoutPassword, accessToken: token }, 201);
   } catch (e) {
-    console.log(e)
-    errorRes(res, e,e.message, 500);
+    console.log(e);
+    errorRes(res, e, e.message, 500);
   }
 }
 
@@ -46,6 +45,14 @@ async function logOut(req, res) {
 }
 
 async function myInfo(req, res) {
+  try {
+    res.status(200).send({ user: req.user, accessToken: req.token });
+  } catch (e) {
+    res.status(404).send("This is a wrong id");
+  }
+}
+
+async function userInfo(req, res) {
   const _id = req.params.id;
 
   try {
@@ -123,6 +130,7 @@ const user = {
   register,
   logIn,
   logOut,
+  userInfo,
   myInfo,
   updateInfo,
 };

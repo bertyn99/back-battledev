@@ -29,7 +29,10 @@ export const router = (function () {
     apiRouter.route("/reconnect").post(verifyToken, lastView, user.reconnectUser); */
 
   // my info
-  apiRouter.route("/user/:id").get(verifyToken, user.myInfo);
+  apiRouter.route("/user/me").get(verifyToken, user.myInfo);
+
+  //other  user info
+  apiRouter.route("/user/:id").get(verifyToken, user.userInfo);
 
   // edit profile
   apiRouter.route("/user/:id/edit").patch(verifyToken, user.updateInfo);
@@ -44,18 +47,23 @@ export const router = (function () {
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
-  apiRouter.route("/battle").post(verifyToken,battle.addResultBattle);
+  apiRouter.route("/battle").post(verifyToken, battle.addResultBattle);
 
   //personal history
-  apiRouter.route("/user/:idUser/battle").get(verifyToken,battle.showBattlesHistory);
+  apiRouter
+    .route("/user/:idUser/battle")
+    .get(verifyToken, battle.showBattlesHistory);
 
-  
   ////////////////////////
   ////   leaderboard   ///
   ////////////////////////
 
-  apiRouter.route("/leaderboard").get(verifyToken,leaderboard.getFullLeaderboard);
-  apiRouter.route("/leaderboard/me").get(verifyToken,leaderboard.getSurroundLeaderboard);
+  apiRouter
+    .route("/leaderboard")
+    .get(verifyToken, leaderboard.getFullLeaderboard);
+  apiRouter
+    .route("/leaderboard/me")
+    .get(verifyToken, leaderboard.getSurroundLeaderboard);
   /*  
  
    // info user

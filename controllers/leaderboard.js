@@ -13,8 +13,8 @@ const leaderboard = {
         .limit(limit * 1)
         .skip((page - 1) * limit);
         
-      const totalPlayer = await User.find().count();
-      successRes(res, { total: totalPlayer,  leaderboard }, 201);
+      const countPlayer = await User.find().count();
+      successRes(res, { total: countPlayer,  leaderboard }, 201);
     } catch (e) {
       errorRes(res, e, e.message, 500);
     }

@@ -5,7 +5,7 @@ import { default as quizzService } from "../services/quizzService.js";
 /**
  * TODO:
  * - [x]getQuestion
- * - []getCategory
+ * - [x]getCategory
  * - []getScoreOfQuestion
  */
 

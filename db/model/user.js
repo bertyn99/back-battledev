@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import * as argon2  from "argon2";
+import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import config from "../../config.js";
@@ -49,7 +49,7 @@ let userSchema = new Schema(
     },
     firstname: { type: String, required: false },
     lastname: { type: String, required: false },
-    quizzPoints:{type:Number,default:0},
+    quizzPoints: { type: Number, default: 0 },
     tokens: [
       {
         token: {
@@ -66,6 +66,8 @@ let userSchema = new Schema(
       default: "user",
     },
     badges: [],
+    rank: 0,
+    followers: [],
     resetPassword: { type: Object, required: false },
     mobile: { type: Number, required: false },
   },
@@ -73,7 +75,7 @@ let userSchema = new Schema(
     timestamps: true,
   }
 );
-userSchema.set('toJSON', { getters: true, virtuals: false });
+userSchema.set("toJSON", { getters: true, virtuals: false });
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
@@ -97,13 +99,11 @@ userSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-userSchema.methods.addScoreBattle=async function (qpBattle) {
-
-let newQuizzPoints=this.quizzPoints>=0?this.quizzPoints +qpBattle:0
-  this.quizzPoints=newQuizzPoints<0 ? 0 : newQuizzPoints
+userSchema.methods.addScoreBattle = async function (qpBattle) {
+  let newQuizzPoints = this.quizzPoints >= 0 ? this.quizzPoints + qpBattle : 0;
+  this.quizzPoints = newQuizzPoints < 0 ? 0 : newQuizzPoints;
   await this.save();
-}
-
+};
 
 userSchema.pre("save", async function (next) {
   const user = this;
