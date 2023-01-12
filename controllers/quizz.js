@@ -20,4 +20,13 @@ async function getQuizz(req, res) {
   }
 }
 
-export default { getQuizz };
+async function getCategoryQuizz(req, res) {
+  try {
+    let q = await quizzService.getCategories();
+    if (q) return successRes(res, q);
+  } catch (error) {
+    return errorRes(res, error);
+  }
+}
+
+export default { getQuizz, getCategoryQuizz };

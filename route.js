@@ -43,7 +43,8 @@ export const router = (function () {
 
   //get quetsion
   apiRouter.route("/quizz").get(quizz.getQuizz);
-
+  //get category
+  apiRouter.route("/quizz/category").get(quizz.getCategoryQuizz);
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
