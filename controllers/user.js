@@ -56,13 +56,11 @@ async function userInfo(req, res) {
   const _id = req.params.id;
 
   try {
-    const user = await User.findById(_id);
-    if (!user) {
-      return res.status(404).send("This is a wrong id");
-    }
-    res.status(200).send(user);
+    const user = await User.find({ _id: _id });
+
+    res.status(202).send({ user });
   } catch (e) {
-    res.status(404).send("This is a wrong id");
+    res.status(403).send("This is a wrong id");
   }
 }
 
