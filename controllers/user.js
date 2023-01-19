@@ -25,7 +25,14 @@ async function logIn(req, res) {
       req.body.password
     );
     const token = await user.generateAuthToken();
-    const { password, ...useWithoutPassword } = user._doc;
+    const {
+      password,
+      __v,
+      tokens,
+      createdAt,
+      updatedAt,
+      ...useWithoutPassword
+    } = user._doc;
     successRes(res, { ...useWithoutPassword, accessToken: token }, 201);
   } catch (e) {
     console.log(e);
@@ -46,7 +53,9 @@ async function logOut(req, res) {
 
 async function myInfo(req, res) {
   try {
-    res.status(200).send({ user: req.user, accessToken: req.token });
+    const { password, __v, tokens, createdAt, updatedAt, ...userClean } =
+      req.user.toJSON();
+    res.status(200).send({ user: userClean, accessToken: req.token });
   } catch (e) {
     res.status(404).send("This is a wrong id");
   }
@@ -56,9 +65,10 @@ async function userInfo(req, res) {
   const _id = req.params.id;
 
   try {
-    const user = await User.find({ _id: _id });
-
-    res.status(202).send({ user });
+    const user = await User.findOne({ _id: _id });
+    const { password, __v, tokens, createdAt, updatedAt, ...userClean } =
+      user.toJSON();
+    res.status(202).send({ user: userClean });
   } catch (e) {
     res.status(403).send("This is a wrong id");
   }
@@ -78,7 +88,9 @@ async function updateInfo(req, res) {
   try {
     updates.forEach((update) => (req.user[update] = req.body[update]));
     await req.user.save();
-    res.send(req.user);
+    const { password, __v, tokens, createdAt, updatedAt, ...userClean } =
+      req.user.toJSON();
+    res.status(202).send({ user: userClean });
   } catch (e) {
     res.status(400).send(e);
   }
