@@ -10,8 +10,9 @@ import rateLimit from "express-rate-limit";
 import rfs from "rotating-file-stream";
 
 const apiLimiter = rateLimit({
-  windowMs: /*  15 * 60 * */ 10000, // 15 minutes
-  max: 5, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  windowMs: /* */ 15 * 60 * 1000, // 15 minutes
+  max: 50, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  message: "You have exceeded the 50 requests in 15 min limit!",
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
@@ -40,10 +41,10 @@ app.use(function (req, res, next) {
   );
   next();
 });
-
+app.use(apiLimiter);
 // Apply the rate limiting middleware to API calls only
 app.use("/api", apiRouter);
-app.use("/api", apiLimiter);
+
 app.listen(config.PORT, () => {
   console.log(`Application listening on port ${config.PORT}!`);
 });
