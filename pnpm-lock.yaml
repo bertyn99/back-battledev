@@ -11,6 +11,7 @@ specifiers:
   dotenv: ^16.0.3
   email-validator: ^2.0.4
   express: ^4.18.2
+  express-rate-limit: ^6.7.0
   express-validator: ^6.14.2
   helmet: ^6.0.1
   https: ^1.0.0
@@ -20,6 +21,7 @@ specifiers:
   morgan: ^1.10.0
   nodemailer: ^6.8.0
   nodemon: ^2.0.20
+  rotating-file-stream: ^3.0.4
   validator: ^13.7.0
 
 dependencies:
@@ -33,6 +35,7 @@ dependencies:
   dotenv: 16.0.3
   email-validator: 2.0.4
   express: 4.18.2
+  express-rate-limit: 6.7.0_express@4.18.2
   express-validator: 6.14.2
   helmet: 6.0.1
   https: 1.0.0
@@ -42,6 +45,7 @@ dependencies:
   morgan: 1.10.0
   nodemailer: 6.8.0
   nodemon: 2.0.20
+  rotating-file-stream: 3.0.4
   validator: 13.7.0
 
 packages:
@@ -1279,6 +1283,15 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /express-rate-limit/6.7.0_express@4.18.2:
+    resolution: {integrity: sha512-vhwIdRoqcYB/72TK3tRZI+0ttS8Ytrk24GfmsxDXK9o9IhHNO5bXRiXQSExPQ4GbaE5tvIS7j1SGrxsuWs+sGA==}
+    engines: {node: '>= 12.9.0'}
+    peerDependencies:
+      express: ^4 || ^5
+    dependencies:
+      express: 4.18.2
+    dev: false
+
   /express-validator/6.14.2:
     resolution: {integrity: sha512-8XfAUrQ6Y7dIIuy9KcUPCfG/uCbvREctrxf5EeeME+ulanJ4iiW71lWmm9r4YcKKYOCBMan0WpVg7FtHu4Z4Wg==}
     engines: {node: '>= 8.0.0'}
@@ -1982,6 +1995,11 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: false
+
+  /rotating-file-stream/3.0.4:
+    resolution: {integrity: sha512-Zd+IA5soqBUKtCa7KfMRnF7GKEaRav/dJFU7UHc+r1FMd8VvMLUFE0q1HX5s6XJO1cZ6jAqtTa/ZFnjc7IqlJA==}
+    engines: {node: '>=14.0'}
     dev: false
 
   /safe-buffer/5.1.2:
