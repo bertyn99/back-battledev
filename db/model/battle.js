@@ -13,7 +13,7 @@ let battleSchema = new Schema(
 battleSchema.statics.findBattlesOfthisUser = async function (idUser) {
   const b = await Battle.find({ idOpponents: idUser }).populate(
     "idOpponents winner",
-    "username"
+    "username avatar"
   );
   return b;
 };
