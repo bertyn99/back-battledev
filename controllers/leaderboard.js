@@ -8,7 +8,7 @@ const leaderboard = {
       const { page = 1, limit = 10 } = req.query;
 
       const leaderboard = await User.find()
-        .select("username quizzPoints badges")
+        .select("username quizzPoints badges avatar")
         .sort({ quizzPoints: "desc" })
         .limit(limit * 1)
         .skip((page - 1) * limit);
@@ -24,7 +24,7 @@ const leaderboard = {
       const { quizzPoints } = req.user;
       const leaderboard = await User.find()
         .where({ quizzPoints: { $lte: quizzPoints + 5 } })
-        .select("username quizzPoints badges")
+        .select("username quizzPoints badges avatar")
         .sort({ quizzPoints: "desc" })
         .limit(10);
 
