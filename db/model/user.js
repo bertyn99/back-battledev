@@ -49,6 +49,7 @@ let userSchema = new Schema(
     },
     firstname: { type: String, required: false },
     lastname: { type: String, required: false },
+    avatar: { type: String, required: false },
     quizzPoints: { type: Number, default: 0 },
     tokens: [
       {

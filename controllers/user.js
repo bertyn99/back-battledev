@@ -4,10 +4,13 @@ import User from "../db/model/user.js";
 import database from "../db/connexion.js";
 import { successRes, errorRes } from "../common/response.js";
 import argon2 from "argon2";
+import { AvatarService } from "../services/avatarService.js";
 async function register(req, res) {
   const user = new User(req.body);
 
   try {
+    const avatar = new AvatarService();
+    user.avatar = avatar.getRandomAvatar(req.username);
     await user.save();
     //envoyer l'emaild e confirmation de création de compte
     const token = await user.generateAuthToken();
@@ -53,10 +56,13 @@ async function logOut(req, res) {
 
 async function myInfo(req, res) {
   try {
+    const avatar = new AvatarService();
+
     const { password, __v, tokens, createdAt, updatedAt, ...userClean } =
       req.user.toJSON();
     res.status(200).send({ user: userClean, accessToken: req.token });
   } catch (e) {
+    console.log(e);
     res.status(404).send("This is a wrong id");
   }
 }

@@ -15,6 +15,7 @@ export default class ApiService {
         ...config.headers,
       },
     });
+
     return {
       json: async () => {
         const response = await promise;
