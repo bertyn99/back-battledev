@@ -1,10 +1,8 @@
 // Dev comments :
 import Fastify from "fastify";
-import ExpressPlugin from "fastify-express";
 import compression from "compression";
 import morgan from "morgan";
-
-import { router as apiRouter } from "./route.js";
+import apiRouter from "./route.js";
 import rateLimit from "express-rate-limit";
 import rfs from "rotating-file-stream";
 
@@ -21,8 +19,6 @@ export default async function buildApp() {
     logger: true,
   });
 
-  await fastify.register(ExpressPlugin);
-
   // create a log stream
   /*   const rfsStream = rfs.createStream("log/log.txt", {
     size: "10M", // rotate every 10 MegaBytes written
@@ -33,18 +29,19 @@ export default async function buildApp() {
     morgan("dev", {
       stream: rfsStream,
     })
-  ); */
+  ); 
   fastify.use(morgan("tiny"));
-  /*   app.use(function (req, res, next) {
+     app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
     next();
-  }); */
-  fastify.use(apiLimiter);
+  }); 
+    fastify.use(apiLimiter); */
   // Apply the rate limiting middleware to API calls only
-  fastify.use("/api", apiRouter);
+
+  fastify.register(apiRouter, { prefix: "/api" });
   return fastify;
 }
