@@ -1,7 +1,6 @@
 // Dev comments :
-
-import express, { urlencoded, json } from "express";
-const app = express();
+import Fastify from "fastify";
+import ExpressPlugin from "fastify-express";
 import compression from "compression";
 import morgan from "morgan";
 
@@ -17,13 +16,15 @@ const apiLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-export default function buildApp() {
-  app.use(urlencoded({ extended: true }));
-  app.use(json());
-  app.use(compression());
+export default async function buildApp() {
+  const fastify = Fastify({
+    logger: true,
+  });
+
+  await fastify.register(ExpressPlugin);
 
   // create a log stream
-  const rfsStream = rfs.createStream("log/log.txt", {
+  /*   const rfsStream = rfs.createStream("log/log.txt", {
     size: "10M", // rotate every 10 MegaBytes written
     interval: "10d", // rotate daily
     compress: "gzip", // compress rotated files
@@ -32,18 +33,18 @@ export default function buildApp() {
     morgan("dev", {
       stream: rfsStream,
     })
-  );
-  app.use(morgan("tiny"));
-  app.use(function (req, res, next) {
+  ); */
+  fastify.use(morgan("tiny"));
+  /*   app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
     next();
-  });
-  app.use(apiLimiter);
+  }); */
+  fastify.use(apiLimiter);
   // Apply the rate limiting middleware to API calls only
-  app.use("/api", apiRouter);
-  return app;
+  fastify.use("/api", apiRouter);
+  return fastify;
 }
