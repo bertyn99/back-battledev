@@ -2,19 +2,19 @@ import user from "./controllers/user.js";
 import battle from "./controllers/battle.js";
 import leaderboard from "./controllers/leaderboard.js";
 import quizz from "./controllers/quizz.js";
-import verifyToken from "./services/verifyToken.js";
 
 export default function (fastify, opt, done) {
   //healthCheck
-  fastify.get("/", {
-    preHandler: (req, res, done) => {
-      console.log("middel");
-      done();
+  fastify.get(
+    "/",
+    {
+      preHandler: [fastify.authenticate],
     },
-    handler: (req, res) => {
+
+    (req, res) => {
       res.send("API is running");
-    },
-  });
+    }
+  );
 
   ////////////////////////
   ////   User         ////
@@ -32,13 +32,31 @@ export default function (fastify, opt, done) {
     fastify.route("/reconnect").post(verifyToken, lastView, user.reconnectUser); */
 
   // my info
-  fastify.get("/user/me", user.myInfo);
+  fastify.get(
+    "/user/me",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.myInfo
+  );
 
   //other  user info
-  fastify.get("/user/:id", user.userInfo);
+  fastify.get(
+    "/user/:id",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.userInfo
+  );
 
   // edit profile
-  fastify.patch("/user/:id/edit", user.updateInfo);
+  fastify.patch(
+    "/user/:id/edit",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.updateInfo
+  );
 
   ////////////////////////
   ////   Quizz         ///
@@ -51,10 +69,22 @@ export default function (fastify, opt, done) {
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
-  fastify.post("/battle", battle.addResultBattle);
+  fastify.post(
+    "/battle",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    battle.addResultBattle
+  );
 
   //personal history
-  fastify.get("/user/:idUser/battle", battle.showBattlesHistory);
+  fastify.get(
+    "/user/:idUser/battle",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    battle.showBattlesHistory
+  );
 
   ////////////////////////
   ////   leaderboard   ///
@@ -63,6 +93,9 @@ export default function (fastify, opt, done) {
   fastify.get("/leaderboard", leaderboard.getFullLeaderboard);
   fastify.get(
     "/leaderboard/me",
+    {
+      preHandler: [fastify.authenticate],
+    },
 
     leaderboard.getSurroundLeaderboard
   );
