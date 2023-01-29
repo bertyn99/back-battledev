@@ -5,6 +5,7 @@ import morgan from "morgan";
 import apiRouter from "./route.js";
 import rateLimit from "express-rate-limit";
 import rfs from "rotating-file-stream";
+import verifyToken from "./plugins/verifyToken.js";
 
 const apiLimiter = rateLimit({
   windowMs: /* */ 15 * 60 * 1000, // 15 minutes
@@ -13,12 +14,10 @@ const apiLimiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
-
+export const fastify = Fastify({
+  logger: true,
+});
 export default async function buildApp() {
-  const fastify = Fastify({
-    logger: true,
-  });
-
   // create a log stream
   /*   const rfsStream = rfs.createStream("log/log.txt", {
     size: "10M", // rotate every 10 MegaBytes written
@@ -41,7 +40,7 @@ export default async function buildApp() {
   }); 
     fastify.use(apiLimiter); */
   // Apply the rate limiting middleware to API calls only
-
+  fastify.register(verifyToken);
   fastify.register(apiRouter, { prefix: "/api" });
   return fastify;
 }
