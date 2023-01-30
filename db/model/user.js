@@ -3,6 +3,7 @@ import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import validator from "validator";
 import config from "../../config.js";
+import { fastify } from "../../app.js";
 
 const Schema = mongoose.Schema;
 
@@ -80,7 +81,10 @@ userSchema.set("toJSON", { getters: true, virtuals: false });
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id.toString() }, config.JWT_SECRET);
+  const token = fastify.jwt.sign(
+    { _id: user._id.toString() },
+    config.JWT_SECRET
+  );
   user.tokens = user.tokens.concat({ token });
   await user.save();
 

@@ -1,82 +1,115 @@
-import { Router } from "express";
 import user from "./controllers/user.js";
 import battle from "./controllers/battle.js";
 import leaderboard from "./controllers/leaderboard.js";
 import quizz from "./controllers/quizz.js";
-import verifyToken from "./services/verifyToken.js";
 
-export const router = (function () {
-  let apiRouter = Router();
-
+export default function (fastify, opt, done) {
   //healthCheck
-  apiRouter.get("/", (req, res) => {
-    res.send("API is running");
-  });
+  fastify.get(
+    "/",
+    {
+      preHandler: [fastify.authenticate],
+    },
+
+    (req, res) => {
+      res.send("API is running");
+    }
+  );
 
   ////////////////////////
   ////   User         ////
   ////////////////////////
   // register user
-  apiRouter.route("/register").post(user.register);
+  fastify.post("/register", user.register);
 
   // connection user
-  apiRouter.route("/login").post(user.logIn);
+  fastify.post("/login", user.logIn);
 
   // deconnection user
-  apiRouter.route("/logout").get(verifyToken, user.logOut);
+  fastify.post("/logout", user.logOut);
 
   /*   // reconnect user
-    apiRouter.route("/reconnect").post(verifyToken, lastView, user.reconnectUser); */
+    fastify.route("/reconnect").post(verifyToken, lastView, user.reconnectUser); */
 
   // my info
-  apiRouter.route("/user/me").get(verifyToken, user.myInfo);
+  fastify.get(
+    "/user/me",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.myInfo
+  );
 
   //other  user info
-  apiRouter.route("/user/:id").get(verifyToken, user.userInfo);
+  fastify.get(
+    "/user/:id",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.userInfo
+  );
 
   // edit profile
-  apiRouter.route("/user/:id/edit").patch(verifyToken, user.updateInfo);
+  fastify.patch(
+    "/user/:id/edit",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    user.updateInfo
+  );
 
   ////////////////////////
   ////   Quizz         ///
   ////////////////////////
 
   //get quetsion
-  apiRouter.route("/quizz").get(quizz.getQuizz);
+  fastify.get("/quizz", quizz.getQuizz);
   //get category
-  apiRouter.route("/quizz/category").get(quizz.getCategoryQuizz);
+  fastify.get("/quizz/category", quizz.getCategoryQuizz);
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
-  apiRouter.route("/battle").post(verifyToken, battle.addResultBattle);
+  fastify.post(
+    "/battle",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    battle.addResultBattle
+  );
 
   //personal history
-  apiRouter
-    .route("/user/:idUser/battle")
-    .get(verifyToken, battle.showBattlesHistory);
+  fastify.get(
+    "/user/:idUser/battle",
+    {
+      preHandler: [fastify.authenticate],
+    },
+    battle.showBattlesHistory
+  );
 
   ////////////////////////
   ////   leaderboard   ///
   ////////////////////////
 
-  apiRouter
-    .route("/leaderboard")
-    .get(verifyToken, leaderboard.getFullLeaderboard);
-  apiRouter
-    .route("/leaderboard/me")
-    .get(verifyToken, leaderboard.getSurroundLeaderboard);
+  fastify.get("/leaderboard", leaderboard.getFullLeaderboard);
+  fastify.get(
+    "/leaderboard/me",
+    {
+      preHandler: [fastify.authenticate],
+    },
+
+    leaderboard.getSurroundLeaderboard
+  );
   /*  
  
    // info user
-   apiRouter.route("/info/:id").get(verifyToken, user.infoUser);
+   fastify.route("/info/:id").get user.infoUser);
  
    
  
    // lost password - client
-   apiRouter.route("/lost").post(user.lostPassword);
+   fastify.route("/lost").post(user.lostPassword);
  
    // lost password - website
-   apiRouter.route("/lost/reset").post(user.resetPassword); */
-
-  return apiRouter;
-})();
+   fastify.route("/lost/reset").post(user.resetPassword); */
+  done();
+}

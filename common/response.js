@@ -5,11 +5,11 @@ export function errorRes(
   statusCode = 500
 ) {
   console.error("ERROR:", err);
-  return res.status(statusCode).json({ error: errMsg });
+  return res.code(statusCode).send({ error: errMsg });
 }
 
 export function successRes(res, data = {}, statusCode = 200) {
-  return res.status(statusCode).json(data);
+  return res.code(statusCode).send(data);
 }
 
 export function errData(res, errMsg = "failed operation") {
