@@ -23,6 +23,8 @@
   "homepage": "https://github.com/bertyn99/Template-server-api#readme",
   "dependencies": {
     "@fastify/jwt": "^6.5.0",
+    "@fastify/redis": "^6.1.0",
+    "@fastify/websocket": "^7.1.2",
     "@meanie/mongoose-to-json": "^2.6.0",
     "argon2": "^0.30.2",
     "compression": "^1.7.4",

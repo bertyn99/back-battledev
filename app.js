@@ -1,12 +1,14 @@
 // Dev comments :
 import Fastify from "fastify";
+import fastifyWebSocket from "@fastify/websocket";
 import compression from "compression";
 import morgan from "morgan";
 import apiRouter from "./route.js";
 import rateLimit from "express-rate-limit";
 import rfs from "rotating-file-stream";
 import verifyToken from "./plugins/verifyToken.js";
-
+import config from "./config.js";
+import fastifyRedis from "@fastify/redis";
 const apiLimiter = rateLimit({
   windowMs: /* */ 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -39,8 +41,13 @@ export default async function buildApp() {
     next();
   }); 
     fastify.use(apiLimiter); */
-  // Apply the rate limiting middleware to API calls only
+  // db redis
+  fastify.register(fastifyRedis, {
+    url: config.REDISURL /* other redis options */,
+  });
+
   fastify.register(verifyToken);
+  fastify.register(fastifyWebSocket);
   fastify.register(apiRouter, { prefix: "/api" });
   return fastify;
 }
