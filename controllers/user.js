@@ -1,7 +1,7 @@
 // To declare
 //db and schema
 import User from "../db/model/user.js";
-import database from "../db/connexion.js";
+import database from "../db/mongoDB.js";
 import { successRes, errorRes } from "../common/response.js";
 import argon2 from "argon2";
 import { AvatarService } from "../services/avatarService.js";

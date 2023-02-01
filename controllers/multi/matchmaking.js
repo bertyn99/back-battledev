@@ -1,6 +1,8 @@
 const MAX_TIME_IN_QUEUE = 20000;
 const POOL_POLL_INTERVAL = 1000;
+import fastify from "../../app.js";
 
+const { redis } = fastify;
 const matchmaking = {
   /**
    * @type {Map<string,MatchingPlayer}
@@ -22,27 +24,25 @@ const matchmaking = {
     connection.socket.on("message", (message) => {
       const msg = JSON.parse(message.toString());
       console.log(`Client message: ${message}`);
-
-      /**
-       * @type {UnmatchedPlayer}
-       */
       const p = {
-        // parse message from client as UnmatchedPlayer
-        id: player.id,
+        // parse message from client as UnmatchedPlayer :: NO TYPE CHECKING HAS BEEN IMPLEMENTED.
+        id: msg.id,
         time_joined: Date.now(),
-        val_1: player.val_1,
-        val_2: player.val_2,
+        qP: msg.qP,
+        category: msg.category,
       };
       // add player to pool if they are not already in pool
-      if (!mm_pool.has(p.id)) {
-        mm_pool.set(p.id, { socket: ws, player: p });
+      if (!this.mm_pool.has(p.id)) {
+        this.mm_pool.set(p.id, { socket: ws, player: p });
+        console.log("Added player to pool");
+        console.log(this.mm_pool);
       } else {
-        ws.close();
+        connection.socket.close();
       }
     });
 
     // CHECK POOL FOR MATCHES EVERY POOL_POLL_INTERVAL / 1000 SECONDS
-    setInterval(() => match_make(mm_pool), POOL_POLL_INTERVAL);
+    /*  setInterval(() => match_make(mm_pool), POOL_POLL_INTERVAL); */
 
     // Client disconnect
     connection.socket.on("close", () => {

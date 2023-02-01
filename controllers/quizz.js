@@ -1,4 +1,4 @@
-import database from "../db/connexion.js";
+import database from "../db/mongoDB.js";
 import { successRes, errorRes } from "../common/response.js";
 import { default as quizzService } from "../services/quizzService.js";
 

@@ -1,4 +1,4 @@
-import database from "../db/connexion.js";
+import database from "../db/mongoDB.js";
 import { successRes, errorRes } from "../common/response.js";
 import Battle from "../db/model/battle.js";
 import User from "../db/model/user.js";
