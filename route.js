@@ -2,6 +2,7 @@ import user from "./controllers/user.js";
 import battle from "./controllers/battle.js";
 import leaderboard from "./controllers/leaderboard.js";
 import quizz from "./controllers/quizz.js";
+import matchmaking from "./controllers/multi/matchmaking.js";
 
 export default function (fastify, opt, done) {
   //healthCheck
@@ -66,6 +67,18 @@ export default function (fastify, opt, done) {
   fastify.get("/quizz", quizz.getQuizz);
   //get category
   fastify.get("/quizz/category", quizz.getCategoryQuizz);
+
+  ////////////////////////
+  ////   MatchMaking   ///
+  ////////////////////////
+
+  fastify.get(
+    "/battle/search",
+
+    { websocket: true, preHandler: [fastify.authenticate] },
+    matchmaking.findOpponent
+  );
+
   ////////////////////////
   ////   Battle        ///
   ////////////////////////
